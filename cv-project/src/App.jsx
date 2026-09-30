@@ -1,121 +1,53 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
+import GeneralForm from './components/GeneralForm'
+import ProfessionalForm from './components/ProfessionalForm'
+import EducationForm from './components/EducationForm' 
+import RenderCV from './components/RenderCV'
+import { useState } from 'react'
+import Intro from './components/Intro.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [generalSubmited, setGeneralSubmited] = useState(false)
+  const [professionalSubmited, setProfessionalSubmited] = useState(false)
+  const [educationSubmited, setEducationSubmited] = useState(false)
 
+  const [info, setInfo] = useState([])
+  const [experiences, setExperiences] = useState([])
+  const [education, setEducation] = useState([])
+  const [showCV, setShowCV] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
+    <main className="App">
+
+      {showIntro ? (
+        <Intro setShowIntro={setShowIntro} />
+      ) : (
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+          {showCV ? (
+            <h1 className="page-title">Your CV</h1>
+          ) : <h1 className="page-title">CV builder</h1>}
+          <button className="cool-button" onClick={() => setShowIntro(true)}>
+            Intro
+          </button>
+          {((generalSubmited && professionalSubmited && educationSubmited && !showCV)) && (
+            <button className="cool-button" type="button" onClick={() => setShowCV(true)}>
+              Done
+            </button>
+          )}
 
-      <div className="ticks"></div>
+      {showCV ? 
+      <div> 
+        <RenderCV generalInfo={info} professionalInfo={experiences} educationInfo={education} setShowCV={setShowCV} />
+      </div>: 
+      <div>
+      <GeneralForm submited={generalSubmited} setSubmited={setGeneralSubmited} info={info} setInfo={setInfo} />
+      <ProfessionalForm submited={professionalSubmited} setSubmited={setProfessionalSubmited} experiences={experiences} setExperiences={setExperiences} />
+      <EducationForm submited={educationSubmited} setSubmited={setEducationSubmited} education={education} setEducation={setEducation} />
+      </div>}  
+      </div>)}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    </main>
+    
   )
 }
 
